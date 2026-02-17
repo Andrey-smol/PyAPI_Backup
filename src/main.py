@@ -97,8 +97,8 @@ def writing_breed_files_to_yandex_disk(client, name_breed, list_images_breed):
             pbar.update(1)
 
 
-def writing_info_file(client, name_breed):
-    info_files = client.get_info_files(f'{name_breed}/')
+def writing_info_file(client, name_breed, count_files):
+    info_files = client.get_info_files(f'{name_breed}/', count_files)
     key_info = ['created', 'mime_type', 'modified', 'name', 'path', 'size']
     list_info_files = []
     for item_ in info_files['_embedded']['items']:
@@ -139,11 +139,12 @@ def main():
                 logger.log(f'для породы собак {name_breed} не найдено файлов')
                 continue
 
+            count_files = len(images_breed)
             client = YandexDiskClient(token)
             writing_breed_files_to_yandex_disk(client, name_breed, images_breed)
-            time.sleep(3)
-            writing_info_file(client, name_breed)
             logger.log(f'Запись файлов на Yandex.disk завершена для породы {name_breed}')
+            time.sleep(3)
+            writing_info_file(client, name_breed, count_files)
             print("Запись файлов на Yandex.disk завершена")
             print('')
 

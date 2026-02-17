@@ -82,14 +82,15 @@ class YandexDiskClient:
             raise MyException(self.TAG, f"файл {disk_path} не удалось записать - "
                                         f"{self.__generate_error_string(response)}")
 
-    def get_info_files(self, path):
+    def get_info_files(self, path, limit=20):
         '''
 
+        :param limit:
         :param path:
         :return:
         '''
         response = requests.get(f'{self.BASE_URL}/v1/disk/resources',
-                                params={'path': path, 'fields': '_embedded.items'},
+                                params={'path': path, 'limit':limit, 'fields': '_embedded.items'},
                                 headers=self.__get_base_headers())
         try:
             response.raise_for_status()
